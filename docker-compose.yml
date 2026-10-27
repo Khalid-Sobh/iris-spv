@@ -1,0 +1,31 @@
+# Isolated staging stack: its own Postgres, nothing else. It cannot touch iris_core.
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-iris}
+      POSTGRES_USER: ${POSTGRES_USER:-iris}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?copy .env.example to .env first}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:   # the app starts only once Postgres accepts connections
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-iris}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-iris}
+    # Default demo: ingest fixtures -> cross-check -> quality report.
+    command: >
+      sh -c "python -m iris_spv ingest --source fixture &&
+             python -m iris_spv crosscheck --reference fixtures/reference_sample.jsonl &&
+             python -m iris_spv report"
+
+volumes:
+  pgdata:

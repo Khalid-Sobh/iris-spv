@@ -1,0 +1,5 @@
+{"name": "Solarpark Alsterwiese GmbH & Co. KG", "court": "AG Hamburg", "register": "HRA 123401", "source_url": "https://example.invalid/reference/ref-1"}
+{"name": "Batteriespeicher Rheinau 1 GmbH", "court": "Amtsgericht Mannheim", "register": "HRB 748812", "source_url": "https://example.invalid/reference/ref-2"}
+{"name": "Windpark Lindenbruch Projekt GmbH", "court": "AG Aurich", "register": "HRB 100200", "source_url": "https://example.invalid/reference/ref-3"}
+{"name": "Unrelated Beispiel GmbH", "court": "AG Köln", "register": "HRB 1", "source_url": "https://example.invalid/reference/ref-4"}
+{"name": "Row without register number", "court": "AG Köln", "register": "", "source_url": "https://example.invalid/reference/ref-5"}

@@ -1,0 +1,6 @@
+# Copy to config.yaml to override defaults. Environment variables win over this file.
+# NEVER put passwords here: pass DATABASE_URL through the environment (.env / Docker).
+database_url: sqlite:///iris_local.db   # local default; Docker sets a Postgres URL
+schema: iris_staging                    # the only schema allowed: anything else is refused
+log_level: INFO
+portal_max_requests_per_hour: 60        # portal terms of use
