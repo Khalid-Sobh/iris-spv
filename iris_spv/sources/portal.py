@@ -1,7 +1,8 @@
 """Live adapter for the public Handelsregister portal: deliberately a guarded stub.
 
-Why a stub: the portal has no official API, its terms cap automated retrieval
-at 60 queries/hour, and bulk automation is prohibited. So this adapter:
+Why a stub: the portal has no official API. Its terms of use (Nutzungsordnung) allow only
+individual retrievals (point 3: no systematic retrieval to build or update a parallel
+register) and cap use at 60 searches/retrievals per hour (point 5). So this adapter:
   * is disabled unless explicitly enabled,
   * always goes through the rate limiter,
   * does NOT contain a scraper. Retrieved records should be exported by hand
@@ -26,8 +27,8 @@ class PortalSource:
     def fetch(self) -> Iterator[dict]:
         if not self.enabled:
             raise PortalDisabled(
-                "Live portal access is disabled: the portal forbids bulk automation "
-                "(60 queries/hour). Use --source fixture, or --source export --path <file>."
+                "Live portal access is disabled: the portal terms forbid systematic retrieval "
+                "and cap use at 60/hour. Use --source fixture, or --source export --path <file>."
             )
         self.limiter.acquire()      # every request must pass through here
         raise NotImplementedError("Portal parsing is intentionally not implemented; see README.")

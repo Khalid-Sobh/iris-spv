@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:nachricht.reg.0400003 xmlns:tns="http://www.xjustiz.de">
+  <tns:nachrichtenkopf><tns:absender><tns:aktenzeichen>HRA 99001 HB</tns:aktenzeichen></tns:absender></tns:nachrichtenkopf>
+  <tns:grunddaten><tns:verfahrensdaten>
+    <tns:instanzdaten><tns:verfahrensgegenstand><tns:gegenstand>Handelsregister Amtsgericht Bremen</tns:gegenstand></tns:verfahrensgegenstand></tns:instanzdaten>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>287</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:organisation>
+        <tns:bezeichnung><tns:bezeichnung.aktuell>Solarpark Testwiese GmbH &amp; Co. KG</tns:bezeichnung.aktuell></tns:bezeichnung>
+        <tns:sitz><tns:ort>Bremen</tns:ort></tns:sitz>
+        <tns:registereintragung><tns:registernummer>HRA 99001 HB</tns:registernummer><tns:euid>DEH1101.HRA99001HB</tns:euid></tns:registereintragung>
+      </tns:organisation></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>288</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:organisation>
+        <tns:bezeichnung><tns:bezeichnung.aktuell>Amtsgericht Bremen</tns:bezeichnung.aktuell></tns:bezeichnung>
+      </tns:organisation></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>086</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:natuerlichePerson>
+        <tns:vollerName><tns:vorname>Erika</tns:vorname><tns:nachname>Musterfrau</tns:nachname></tns:vollerName>
+        <tns:geburt><tns:geburtsdatum>1980-01-01</tns:geburtsdatum></tns:geburt>
+      </tns:natuerlichePerson></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+  </tns:verfahrensdaten></tns:grunddaten>
+  <tns:fachdatenRegister>
+    <tns:auszug><tns:abrufdatum>2026-10-28</tns:abrufdatum></tns:auszug>
+    <tns:basisdatenRegister>
+      <tns:gruendungsmetadaten><tns:gruendungsdatum>2026-10-20</tns:gruendungsdatum></tns:gruendungsmetadaten>
+      <tns:gegenstand>Planung, Errichtung und Betrieb eines Solarparks.</tns:gegenstand>
+      <tns:kapitalgesellschaft><tns:kapital><tns:hoehe><tns:zahl>1000</tns:zahl><tns:auswahl_waehrung><tns:waehrung><code>EUR</code></tns:waehrung></tns:auswahl_waehrung></tns:hoehe></tns:kapital></tns:kapitalgesellschaft>
+    </tns:basisdatenRegister>
+  </tns:fachdatenRegister>
+</tns:nachricht.reg.0400003>

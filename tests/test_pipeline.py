@@ -56,3 +56,13 @@ def test_every_staged_row_has_source_dates_and_evidence_fields(loader, fixture_s
     bad = loader.db.query(f"SELECT COUNT(*) AS n FROM {loader.records} WHERE source IS NULL OR source_date IS NULL "
                           "OR retrieved_at IS NULL OR raw_payload IS NULL OR spv_evidence IS NULL")
     assert bad[0]["n"] == 0
+
+
+def test_report_shows_unknown_formation_dates(loader, tmp_path, log):
+    from iris_spv.report import build_report
+    from iris_spv.sources.file_source import FileSource
+    f = tmp_path / "x.jsonl"
+    f.write_text('{"name": "Foo GmbH", "court": "AG Hamburg", "register": "HRB 1", "event": "Neueintragung", '
+                 '"event_date": "", "published": "2026-09-12"}\n')
+    run_ingest(FileSource(str(f), "fixture"), loader, "r", log, now=NOW)
+    assert "formation date unknown: 1" in build_report(loader)

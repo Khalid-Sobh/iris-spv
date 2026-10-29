@@ -38,7 +38,7 @@ class Record:
     retrieved_at: str       # when WE fetched it (ISO, UTC)
     run_id: str
     formation_event: str    # always FORMATION for accepted records
-    formation_date: str     # ISO
+    formation_date: str | None  # ISO; None = the source states no date (never guessed)
     share_capital_eur: float | None
     activity_text: str
     content_hash: str       # hash of business fields: detects real changes

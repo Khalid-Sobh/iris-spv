@@ -30,7 +30,11 @@ def clean(text) -> str:
 # ---------- individual fields --------------------------------------------------
 
 def normalize_court(raw) -> str:
-    """'AG münchen' / 'Amtsgericht München' / 'München' -> 'Amtsgericht München'."""
+    """'AG München' / 'amtsgericht München' / 'München' -> 'Amtsgericht München'.
+
+    The prefix is unified; the city's spelling is kept as given (the stable ID is
+    case-folded separately, so 'münchen' and 'München' still give the same ID).
+    """
     s = clean(raw)
     if not s:
         raise RecordRejected("missing_court")
@@ -72,7 +76,14 @@ _LEGAL_FORMS = [
 
 
 def split_legal_form(name: str) -> tuple[str, str]:
-    """'Solarpark Foo GmbH & Co. KG' -> ('Solarpark Foo', 'GmbH & Co. KG')."""
+    """'Solarpark Foo GmbH & Co. KG' -> ('Solarpark Foo', 'GmbH & Co. KG').
+
+    German naming also allows words between the parts: 'Foo GmbH & Co. Solarpark KG'.
+    That is the same legal form, so it is recognised too (the inserted words stay in the name).
+    """
+    inserted = re.search(r"\s+gmbh\s*&\s*co\.?\s+(.+?)\s+kg\.?$", name, re.I)
+    if inserted:
+        return f"{name[: inserted.start()]} {inserted.group(1)}".strip(), "GmbH & Co. KG"
     for label, pattern in _LEGAL_FORMS:
         m = re.search(rf"\s+{pattern}\.?$", name, re.I)
         if m:
@@ -80,11 +91,17 @@ def split_legal_form(name: str) -> tuple[str, str]:
     return name, ""
 
 
-def parse_date(raw, field_name: str) -> date:
-    """Accept ISO (2026-09-14) or German (14.09.2026); anything else is rejected."""
+def parse_date(raw, field_name: str, required: bool = True) -> date | None:
+    """Accept ISO (2026-09-14) or German (14.09.2026); anything else is rejected.
+
+    An EMPTY value is rejected when `required`, otherwise returned as None (unknown).
+    A non-empty value that is not a valid date is always rejected: never guessed.
+    """
     s = clean(raw)
     if not s:
-        raise RecordRejected(f"missing_{field_name}")
+        if required:
+            raise RecordRejected(f"missing_{field_name}")
+        return None
     for fmt in ("%Y-%m-%d", "%d.%m.%Y"):
         try:
             return datetime.strptime(s, fmt).date()
@@ -151,12 +168,17 @@ def normalize(raw: dict, source: str, run_id: str, now: datetime | None = None) 
     if "_malformed_line" in raw:  # FileSource flags lines that are not valid JSON
         raise RecordRejected("malformed_json", f"line {raw['_malformed_line']}")
 
+    if "_unreadable_file" in raw:  # SiXmlSource flags XML files that cannot be parsed
+        raise RecordRejected("unreadable_source_file", raw["_unreadable_file"])
+
     now = now or datetime.now(timezone.utc)
     ident = identity_fields(raw)
     event = parse_event(raw.get("event"))
-    formation_date = parse_date(raw.get("event_date"), "event_date")
+    # The formation date may be unknown (e.g. many KG extracts state none): stage it as NULL
+    # instead of losing the record. A date that is present but malformed is still rejected.
+    formation_date = parse_date(raw.get("event_date"), "event_date", required=False)
     source_date = parse_date(raw.get("published"), "source_date")
-    if formation_date > now.date():
+    if formation_date and formation_date > now.date():
         raise RecordRejected("future_event_date", formation_date.isoformat())
 
     capital = parse_capital(raw.get("capital"))
@@ -165,7 +187,7 @@ def normalize(raw: dict, source: str, run_id: str, now: datetime | None = None) 
     # Hash only the business fields (not run_id / timestamps), so re-running
     # the same data produces the same hash -> "unchanged".
     hash_input = "|".join([
-        ident.record_id, ident.company_name, event, formation_date.isoformat(),
+        ident.record_id, ident.company_name, event, str(formation_date or ""),
         str(capital), activity,
     ])
     return Record(
@@ -176,7 +198,7 @@ def normalize(raw: dict, source: str, run_id: str, now: datetime | None = None) 
         retrieved_at=now.astimezone(timezone.utc).isoformat(timespec="seconds"),
         run_id=run_id,
         formation_event=event,
-        formation_date=formation_date.isoformat(),
+        formation_date=formation_date.isoformat() if formation_date else None,
         share_capital_eur=capital,
         activity_text=activity,
         content_hash=hashlib.sha256(hash_input.encode()).hexdigest(),

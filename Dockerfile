@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements-dev.txt
 
 COPY iris_spv ./iris_spv
 COPY fixtures ./fixtures
+COPY portal_data ./portal_data
 COPY tests ./tests
 COPY pytest.ini ./
 

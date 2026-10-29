@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS @SCHEMA@.corporate_distress_records (
     register_number     TEXT NOT NULL,
     register_suffix     TEXT NOT NULL DEFAULT '',
     formation_event     TEXT NOT NULL,             -- FORMATION
-    formation_date      @DATE@ NOT NULL,
+    formation_date      @DATE@,                    -- NULL = unknown (the source states none)
     share_capital_eur   @NUM@,
     activity_text       TEXT,
     activity_terms      TEXT,                      -- JSON array of matched terms

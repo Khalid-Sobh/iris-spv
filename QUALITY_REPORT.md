@@ -53,6 +53,24 @@ Run on the shipped synthetic fixtures (19 input lines). Figures describe pipelin
 The two `name_candidate_only` rows share a name with a reference entry but not its register ID, so they are not confirmed.
 One reference row without a register number was skipped.
 
+## Real-data check (hand-exported SI files)
+
+The SI importer was also run on 14 files exported by hand from the portal (individual lookups): 13 staged, 1 rejected.
+Real company names are not listed here (see README on reuse of register data). Findings:
+
+* Rejected: 1 association (`VR` register, correctly out of scope).
+* 4 KG files state no founding date. They are staged with an empty `formation_date` (never guessed), so
+  of the 13 staged records 9 have a known date and 4 do not.
+* **Three bugs were found by this check and fixed, with regression tests:** (1) a KG's general partner's register
+  number was read instead of the KG's own (verified afterwards against each file's own case number: 3 of 3 correct
+  on unseen files); (2) KGs got no capital, because they have liability contributions instead of share capital;
+  (3) `GmbH & Co. <word> KG` names were not recognised as a GmbH & Co. KG.
+* Most of the sample is not recent: only 3 of the 9 companies with a known date were founded within the last 12 months.
+* A dedicated general-partner GmbH ("... Verwaltungs GmbH") can score "likely" because its purpose text
+  mentions the project's asset. It supports a project structure but is not the project vehicle itself.
+* The "low capital" rule (at most 25,000 EUR) fires for most companies and does not fit KGs, whose liability
+  sums are often higher. Rule weights are uncalibrated heuristics.
+
 ## Evidence for acceptance
 
 | Criterion | Evidence |

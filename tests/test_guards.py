@@ -42,3 +42,11 @@ def test_export_source_requires_a_path():
 ])
 def test_sqlalchemy_style_database_url_is_accepted(url, expected):
     assert clean_pg_url(url) == expected
+
+
+def test_old_sqlite_schema_is_detected_with_a_clear_message():
+    db = Db("sqlite:///:memory:")
+    db.execute("CREATE TABLE iris_staging.corporate_distress_records "
+               "(record_id TEXT PRIMARY KEY, formation_date TEXT NOT NULL)")      # the older layout
+    with pytest.raises(RuntimeError, match="older version"):
+        Loader(db).init_schema()

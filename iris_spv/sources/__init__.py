@@ -3,6 +3,7 @@ from pathlib import Path
 
 from iris_spv.sources.file_source import FileSource
 from iris_spv.sources.portal import PortalSource
+from iris_spv.sources.si_xml import SiXmlSource
 
 DEFAULT_FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "handelsregister_sample.jsonl"
 
@@ -14,6 +15,10 @@ def get_source(name: str, path: str | None = None, max_per_hour: int = 60):
         if not path:
             raise ValueError("--source export needs --path <file.jsonl>")
         return FileSource(path, name="handelsregister_export")
+    if name == "si":
+        if not path:
+            raise ValueError("--source si needs --path <file.xml or folder>")
+        return SiXmlSource(path)
     if name == "portal":
         return PortalSource(max_per_hour=max_per_hour)
     raise ValueError(f"unknown source: {name}")

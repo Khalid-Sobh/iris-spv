@@ -96,6 +96,35 @@ def test_full_normalize_happy_path():
     assert '"Solarpark Test GmbH"' in rec.raw_payload     # original kept
 
 
+def test_missing_event_date_is_staged_as_none():
+    rec = normalize(good_raw(event_date=""), "fixture", "r1", NOW)
+    assert rec.formation_date is None
+    assert rec.content_hash == normalize(good_raw(event_date=""), "fixture", "r2", NOW).content_hash
+
+
+def test_present_but_malformed_event_date_is_still_rejected():
+    with pytest.raises(RecordRejected) as e:
+        normalize(good_raw(event_date="2026-13-45"), "fixture", "r1", NOW)
+    assert e.value.reason == "bad_event_date"
+
+
+def test_optional_date_returns_none_but_required_date_rejects():
+    assert parse_date("", "d", required=False) is None
+    with pytest.raises(RecordRejected):
+        parse_date("", "d")
+
+
+def test_gmbh_co_kg_with_words_between_is_recognised():
+    assert split_legal_form("Dr. Foo GmbH & Co. Solarpark KG") == ("Dr. Foo Solarpark", "GmbH & Co. KG")
+    assert split_legal_form("Foo GmbH & Co. KG") == ("Foo", "GmbH & Co. KG")      # unchanged
+    assert split_legal_form("Foo KG") == ("Foo", "KG")                            # a plain KG stays a KG
+
+
+def test_legal_form_variant_gives_same_identity_fields_as_plain_form():
+    a = identity_fields({"name": "Dr. Foo GmbH & Co. Solarpark KG", "court": "AG Aachen", "register": "HRA 1"})
+    assert a.legal_form == "GmbH & Co. KG" and a.company_name_norm == "dr foo solarpark"
+
+
 def test_non_formation_event_rejected():
     with pytest.raises(RecordRejected) as e:
         normalize(good_raw(event="Änderung"), "fixture", "r1", NOW)

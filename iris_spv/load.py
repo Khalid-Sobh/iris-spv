@@ -46,11 +46,16 @@ class Db:
             return re.sub(r"%\((\w+)\)s", r":\1", sql)
         return sql
 
+    def _params(self, params):
+        # sqlite wants a mapping; psycopg must get None (not {}) when there are no
+        # parameters, otherwise it treats a literal '%' in LIKE patterns as a placeholder.
+        return (params or {}) if self.dialect == "sqlite" else (params or None)
+
     def execute(self, sql: str, params: dict | None = None) -> None:
-        self.conn.execute(self._sql(sql), params or {})
+        self.conn.execute(self._sql(sql), self._params(params))
 
     def query(self, sql: str, params: dict | None = None) -> list[dict]:
-        return [dict(r) for r in self.conn.execute(self._sql(sql), params or {}).fetchall()]
+        return [dict(r) for r in self.conn.execute(self._sql(sql), self._params(params)).fetchall()]
 
     def commit(self) -> None:
         self.conn.commit()
@@ -82,7 +87,18 @@ class Loader:
         for statement in ddl.split(";"):
             if statement.strip():
                 self.db.execute(statement)
+        self._upgrade_older_schema()
         self.db.commit()
+
+    def _upgrade_older_schema(self) -> None:
+        """formation_date used to be NOT NULL. CREATE ... IF NOT EXISTS does not change old tables."""
+        if self.db.dialect == "postgres":
+            self.db.execute(f"ALTER TABLE {self.records} ALTER COLUMN formation_date DROP NOT NULL")
+            return
+        cols = self.db.query(f"PRAGMA {STAGING_SCHEMA}.table_info(corporate_distress_records)")
+        if any(c["name"] == "formation_date" and c["notnull"] for c in cols):
+            raise RuntimeError("The staging table comes from an older version (formation_date NOT NULL). "
+                               "Delete the SQLite file (make clean) and run again.")
 
     def upsert(self, rec: Record) -> str:
         """Insert or update one record. Returns 'inserted' | 'updated' | 'unchanged'."""

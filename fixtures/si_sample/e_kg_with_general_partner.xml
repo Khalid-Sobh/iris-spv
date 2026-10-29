@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC. A KG file lists its general partner (a separate GmbH with its OWN register number). -->
+<tns:nachricht.reg.0400003 xmlns:tns="http://www.xjustiz.de">
+  <tns:grunddaten><tns:verfahrensdaten>
+    <tns:instanzdaten><tns:aktenzeichen><tns:auswahl_aktenzeichen><tns:aktenzeichen.strukturiert>
+      <tns:register><code>HRA</code></tns:register><tns:laufendeNummer>99003</tns:laufendeNummer>
+    </tns:aktenzeichen.strukturiert></tns:auswahl_aktenzeichen></tns:aktenzeichen></tns:instanzdaten>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>287</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:organisation>
+        <tns:bezeichnung><tns:bezeichnung.aktuell>Batteriespeicher Musterdorf GmbH &amp; Co. KG</tns:bezeichnung.aktuell></tns:bezeichnung>
+      </tns:organisation></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>288</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:organisation>
+        <tns:bezeichnung><tns:bezeichnung.aktuell>Amtsgericht Musterstadt</tns:bezeichnung.aktuell></tns:bezeichnung>
+      </tns:organisation></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>252</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:organisation>
+        <tns:bezeichnung><tns:bezeichnung.aktuell>Batteriespeicher Musterdorf Verwaltungs-GmbH</tns:bezeichnung.aktuell></tns:bezeichnung>
+        <tns:registereintragung><tns:registernummer>HRB 99004</tns:registernummer></tns:registereintragung>
+      </tns:organisation></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>275</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:natuerlichePerson>
+        <tns:vollerName><tns:vorname>Hans</tns:vorname><tns:nachname>Beispiel</tns:nachname></tns:vollerName>
+      </tns:natuerlichePerson></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+  </tns:verfahrensdaten></tns:grunddaten>
+  <tns:fachdatenRegister>
+    <tns:auszug><tns:abrufdatum>2026-10-28</tns:abrufdatum></tns:auszug>
+    <tns:basisdatenRegister>
+      <tns:gruendungsmetadaten><tns:gruendungsdatum>2026-10-10</tns:gruendungsdatum></tns:gruendungsmetadaten>
+      <tns:auswahl_zusatzangaben><tns:personengesellschaft><tns:zusatzKG>
+        <tns:datenKommanditist><tns:hafteinlage><tns:zahl>100.00</tns:zahl><tns:auswahl_waehrung><tns:waehrung><code>EUR</code></tns:waehrung></tns:auswahl_waehrung></tns:hafteinlage></tns:datenKommanditist>
+        <tns:datenKommanditist><tns:hafteinlage><tns:zahl>900.00</tns:zahl><tns:auswahl_waehrung><tns:waehrung><code>EUR</code></tns:waehrung></tns:auswahl_waehrung></tns:hafteinlage></tns:datenKommanditist>
+      </tns:zusatzKG></tns:personengesellschaft></tns:auswahl_zusatzangaben>
+    </tns:basisdatenRegister>
+  </tns:fachdatenRegister>
+</tns:nachricht.reg.0400003>

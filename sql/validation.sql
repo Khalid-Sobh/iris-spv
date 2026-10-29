@@ -30,3 +30,8 @@ FROM iris_staging.corporate_distress_rejects GROUP BY reason ORDER BY records DE
 SELECT company_name, register_court, register_type || ' ' || register_number AS register,
        spv_score, spv_evidence
 FROM iris_staging.corporate_distress_records ORDER BY spv_score DESC, record_id LIMIT 5;
+
+-- 8. Records whose formation date is unknown (informational): the source stated none, nothing was guessed.
+--    Use  WHERE formation_date IS NOT NULL  when you only want records with a known date.
+SELECT COUNT(*) AS unknown_formation_date FROM iris_staging.corporate_distress_records
+WHERE formation_date IS NULL;

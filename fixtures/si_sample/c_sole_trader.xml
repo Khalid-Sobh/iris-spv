@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:nachricht.reg.0400003 xmlns:tns="http://www.xjustiz.de">
+  <tns:grunddaten><tns:verfahrensdaten>
+    <tns:beteiligung>
+      <tns:rolle><tns:rollenbezeichnung><code>287</code></tns:rollenbezeichnung></tns:rolle>
+      <tns:beteiligter><tns:auswahl_beteiligter><tns:natuerlichePerson>
+        <tns:vollerName><tns:vorname>Max</tns:vorname><tns:nachname>Mustermann</tns:nachname></tns:vollerName>
+      </tns:natuerlichePerson></tns:auswahl_beteiligter></tns:beteiligter>
+    </tns:beteiligung>
+  </tns:verfahrensdaten></tns:grunddaten>
+  <tns:fachdatenRegister><tns:auszug><tns:abrufdatum>2026-10-28</tns:abrufdatum></tns:auszug></tns:fachdatenRegister>
+</tns:nachricht.reg.0400003>

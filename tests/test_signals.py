@@ -37,3 +37,9 @@ def test_missing_purpose_and_capital_is_handled():
 
 def test_scoring_is_deterministic():
     assert scored(name="Solarpark X GmbH").spv_evidence == scored(name="Solarpark X GmbH").spv_evidence
+
+
+def test_gmbh_co_kg_variant_scores_like_the_plain_form():
+    plain = scored(name="Solarpark Foo GmbH & Co. KG", register="HRA 5", object="", capital="")
+    variant = scored(name="Foo GmbH & Co. Solarpark KG", register="HRA 6", object="", capital="")
+    assert plain.spv_score == variant.spv_score == 0.45
