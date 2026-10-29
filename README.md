@@ -17,7 +17,7 @@ make docker-up     # copies .env.example to .env, builds, runs the demo
 make docker-test   # runs the test suite inside the image
 ```
 
-Step-by-step guide with expected output: **`WALKTHROUGH.md`**.
+<!-- Step-by-step guide with expected output: **`WALKTHROUGH.md`**. -->
 
 Commands (`python -m iris_spv ...`):
 
